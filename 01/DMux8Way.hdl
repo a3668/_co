@@ -16,5 +16,12 @@ CHIP DMux8Way {
     OUT a, b, c, d, e, f, g, h;
 
     PARTS:
-    // Put your code here:
+    // 第一層分解，將輸入分為前 4 路 (x) 和後 4 路 (y)
+    DMux(in=in, sel=sel[2], a=x, b=y);
+
+    // 第二層分解，分解 x 成前 2 路 (a, b, c, d)
+    DMux4Way(in=x, sel=sel[0..1], a=a, b=b, c=c, d=d);
+
+    // 第二層分解，分解 y 成後 4 路 (e, f, g, h)
+    DMux4Way(in=y, sel=sel[0..1], a=e, b=f, c=g, d=h);
 }
