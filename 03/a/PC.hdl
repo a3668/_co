@@ -17,13 +17,13 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
-    // Step 1: Register to hold the current value
+    // Step 1
     Register(in=outM, load=true, out=out, out=outR);
 
-    // Step 2: Increment the current value
+    // Step 2:
     Inc16(in=outR, out=outRI);
 
-    // Step 3: Mux8Way16 to handle reset, load, and increment logic
+    // Step 3
     Mux8Way16(
         a=outR,       // Keep current value
         b=outRI,      // Incremented value
