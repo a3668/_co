@@ -11,10 +11,31 @@
  * else                    out[t+1] = out[t]
  */
 
+
 CHIP PC {
-    IN in[16],load,inc,reset;
+    IN in[16], load, inc, reset;
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    // Step 1: Register to hold the current value
+    Register(in=outM, load=true, out=out, out=outR);
+
+    // Step 2: Increment the current value
+    Inc16(in=outR, out=outRI);
+
+    // Step 3: Mux8Way16 to handle reset, load, and increment logic
+    Mux8Way16(
+        a=outR,       // Keep current value
+        b=outRI,      // Incremented value
+        c=in,         // Load input value (path 1)
+        d=in,         // Load input value (path 2, unused but needed for Mux8Way16)
+        e=false,      // Reset to 0 (path 1, unused but needed for Mux8Way16)
+        f=false,      // Reset to 0 (path 2, unused but needed for Mux8Way16)
+        g=false,      // Reset to 0 (path 3, unused but needed for Mux8Way16)
+        h=false,      // Reset to 0 (path 4, unused but needed for Mux8Way16)
+        sel[2]=reset, // Highest priority: Reset
+        sel[1]=load,  // Next priority: Load
+        sel[0]=inc,   // Lowest priority: Increment
+        out=outM      // Final value to register
+    );
 }

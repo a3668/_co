@@ -42,5 +42,35 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    // Step 1: Process input x
+    Mux16(a=x, b=false, sel=zx, out=xz);     // Zero x if zx == 1
+    Not16(in=xz, out=nxz);                  // Negate xz if nx == 1
+    Mux16(a=xz, b=nxz, sel=nx, out=xt);     // Final x
+
+    // Step 2: Process input y
+    Mux16(a=y, b=false, sel=zy, out=yz);    // Zero y if zy == 1
+    Not16(in=yz, out=nyz);                  // Negate yz if ny == 1
+    Mux16(a=yz, b=nyz, sel=ny, out=yt);     // Final y
+
+    // Step 3: Compute function (x & y or x + y)
+    And16(a=xt, b=yt, out=andRes);          // x & y
+    Add16(a=xt, b=yt, out=addRes);          // x + y
+    Mux16(a=andRes, b=addRes, sel=f, out=res); // Select function result
+
+    // Step 4: Handle no (negate the result)
+    Not16(in=res, out=nres);                // Negate res if no == 1
+    Mux16(a=res, b=nres, sel=no, out=finalRes); // Final result
+
+    // Step 5: Output the result
+    And16(a=finalRes, b=finalRes, out=out); // Ensure finalRes is passed to out
+
+    // Step 6: Handle zero detection (zr)
+    And16(a=finalRes, b=finalRes, out[0..7]=lowBits, out[8..15]=highBits);
+    Or8Way(in=lowBits, out=lowOr);
+    Or8Way(in=highBits, out=highOr);
+    Or(a=lowOr, b=highOr, out=anySet);
+    Not(in=anySet, out=zr);                 // Set zr to 1 if all bits are zero
+
+    // Step 7: Handle negative detection (ng)
+    And16(a=finalRes, b=finalRes, out[15]=ng); // Set ng to 1 if MSB is 1
 }

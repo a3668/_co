@@ -14,5 +14,7 @@ CHIP Bit {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // 使用 DFF 儲存狀態，內部信號分為 clear 和 muxOut
+    DFF(in=muxOut, out=dffOut, out=out);
+    Mux(a=dffOut, b=in, sel=load, out=muxOut);
 }
