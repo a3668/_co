@@ -70,7 +70,7 @@
 
 [Or8Way代碼](./01/Or8Way.hdl)
 
-![Or8Way](./pic/or8Way.png)
+![Or8Way](./pic/or8way.png)
 
 ----
 
