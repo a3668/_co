@@ -172,33 +172,42 @@
 ## 第七週習題 -- 第四章 第一題
 ### 聽完老師講解後看老師提供教材和gpt協助完成
 [mult.asm](./04/fill/Fill.asm)
+
 [代碼解釋](./04/README.md)
+
 [位置](./pic/screen.png)
 
 ----
 
 ## 第八週習題 -- 第四章 第二題
 ### 聽完老師講解後看老師提供教材和gpt協助完成
+
 [mult.asm](./04/mult/mult.asm)
+
 [代碼解釋](./04/README.md)
 
 ----
 
 ## 第九週習題 -- 第五章 CPU
 ### 看作者教材和gpt協助完成
+
 [CPU](./05/CPU.hdl)
 
 ----
 
 ## 第十週習題 -- 第五章 後半部
 ### 聽完老師講解後看老師提供教材和gpt裡的老師協助完成
+
 [Ｍemory](./05/Ｍemory.hdl)
+
 [Computer](./05/Computer.hdl)
 
 ----
 
 ## 期末作業
+
 [final](./final/assembler.cpp)
+
 [講解](./final/README.md)
 
 
