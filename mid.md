@@ -16,3 +16,11 @@
 
 ![Xor](./pic/XOR.png)
 
+[Mux代碼](./01/Mux.hdl)
+
+![Mux](./pic/MUX.png)
+
+[DMux代碼](./01/DMux.hdl)
+
+![DMux](./pic/DMux.png)
+
