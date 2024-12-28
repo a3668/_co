@@ -12,83 +12,102 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
-// 定義常數
-@SCREEN
-D=A            // D = SCREEN 基址
-@screenBase
-M=D            // 將 SCREEN 基址存入變數 screenBase
 
-@SCREEN
-D=A
-@8192
-D=D+A          // D = SCREEN + 8192
-@screenEnd
-M=D            // 定義螢幕結束地址 (screenEnd = SCREEN + 8192)
+// Fill.asm
+// 這個程式會不斷偵測鍵盤輸入：
+// 如果偵測到任意按鍵，將螢幕每個像素填為黑色 (每個 word 寫為 -1)；
+// 如果沒有按鍵，將螢幕清空 (每個 word 寫為 0)。
 
-(INFINITE_LOOP)
-// 讀取鍵盤輸入
-@KBD
-D=M            // D = KBD 的值
+// 預先定義符號：
+//   SCREEN = 16384   (螢幕的起始位址)
+//   KBD    = 24576   (鍵盤的記憶體對應位址)
+//
+//   我們使用 R13 來作為螢幕位址的迴圈指標 (pointer)。
 
-// 檢查鍵盤狀態
-@BLACK_SCREEN
-D;JNE          // 如果 D != 0 (鍵盤按下)，跳轉到 BLACK_SCREEN
+//-----------------------
+// 主程式迴圈 (LOOP)
+//-----------------------
+(LOOP)
+    @KBD      // 讀取鍵盤狀態
+    D=M
+    @FILL
+    D;JNE     // 如果 D != 0 (表示有按鍵被按下) -> 跳到 FILL
+    @CLEAR
+    0;JMP     // 否則 -> 跳到 CLEAR
 
-@WHITE_SCREEN
-0;JMP          // 如果 D == 0 (無按鍵)，跳轉到 WHITE_SCREEN
+//-----------------------
+// 填滿螢幕 (FILL)
+//-----------------------
+(FILL)
+    @SCREEN   // SCREEN=16384 (預先定義符號)
+    D=A       // D = 16384
+    @R13
+    M=D       // R13 = 16384  (螢幕位址指標，從頂端開始)
 
-// 填滿黑色螢幕
-(BLACK_SCREEN)
-@screenBase
-D=M            // D = SCREEN 基址
-@i
-M=D            // 初始化 i = SCREEN 基址
+(LOOP_FILL)
+    // 先檢查：是否已寫到螢幕尾端？
+    @R13
+    D=M
+    @END_SCREEN
+    D=D-A     // D = R13 - 24576
+    @FILL_DONE
+    D;JEQ     // 如果 R13 == 24576，代表整個螢幕都填好了 -> 跳 FILL_DONE
 
-@-1
-D=A            // D = -1 (黑色)
+    // 如果還沒到尾端，就把該位址填入 -1 (0xFFFF) -> 全黑
+    @R13
+    A=M       // A = 當前螢幕位址
+    M=-1      // 這個 RAM word 置為 -1 (所有位元 = 1 -> 黑)
 
-(FILL_BLACK_LOOP)
-@i
-A=M
-M=D            // 當前記憶體位置填入黑色
+    // 將 R13(指標) 加一，準備寫下一個像素字
+    @R13
+    M=M+1
+    // 寫完後回到迴圈繼續檢查
+    @LOOP_FILL
+    0;JMP
 
-@i
-M=M+1          // i = i + 1
+(FILL_DONE)
+    // 若已填滿或鍵盤狀態中途改變(下次回到 LOOP 會再偵測一次)
+    @LOOP
+    0;JMP
 
-@screenEnd
-D=M
-@i
-D=D-M          // D = screenEnd - i
-@FILL_BLACK_LOOP
-D;JGT          // 如果還沒到螢幕末尾，繼續填入黑色
+//-----------------------
+// 清除螢幕 (CLEAR)
+//-----------------------
+(CLEAR)
+    @SCREEN
+    D=A
+    @R13
+    M=D       // R13 = 16384
 
-@INFINITE_LOOP
-0;JMP          // 返回無限循環
+(LOOP_CLEAR)
+    @R13
+    D=M
+    @END_SCREEN
+    D=D-A     // D = R13 - 24576
+    @CLEAR_DONE
+    D;JEQ     // 如果 R13 == 24576，就表示已清到螢幕尾
 
-// 填滿白色螢幕
-(WHITE_SCREEN)
-@screenBase
-D=M            // D = SCREEN 基址
-@i
-M=D            // 初始化 i = SCREEN 基址
+    // 將當前位置填為 0 (全白)
+    @R13
+    A=M
+    M=0
 
-@0
-D=A            // D = 0 (白色)
+    // 指標加一繼續
+    @R13
+    M=M+1
+    @LOOP_CLEAR
+    0;JMP
 
-(FILL_WHITE_LOOP)
-@i
-A=M
-M=D            // 當前記憶體位置填入白色
+(CLEAR_DONE)
+    @LOOP
+    0;JMP
 
-@i
-M=M+1          // i = i + 1
-
-@screenEnd
-D=M
-@i
-D=D-M          // D = screenEnd - i
-@FILL_WHITE_LOOP
-D;JGT          // 如果還沒到螢幕末尾，繼續填入白色
-
-@INFINITE_LOOP
-0;JMP          // 返回無限循環
+//-----------------------
+// 螢幕尾端 (END_SCREEN)
+//-----------------------
+// 這個符號對應值為 24576 (KBD)，
+// 但在組譯時只是拿來做比較用。
+//-----------------------
+(END_SCREEN)
+    @24576    // 這行實際上 A=24576
+    0;JMP     // 後面沒特別動作，只是提供比較用常數

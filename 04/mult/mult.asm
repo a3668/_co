@@ -1,9 +1,40 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/04/Mult.asm
+// Mult.asm
+// 功能: 計算 R0 * R1，結果存入 R2 (RAM[0], RAM[1], RAM[2] 分別對應 R0, R1, R2)
+// 確保 R0 和 R1 的值不被修改
 
-// Multiplies R0 and R1 and stores the result in R2.
-// (R0, R1, R2 refer to RAM[0], RAM[1], and RAM[2], respectively.)
+// 初始化 R2 為 0 (累積乘積的結果)
+@R2
+M=0          // R2 = 0
 
-// Put your code here.
+// 將 R1 的值複製到 R3 (用於迴圈計數)
+@R1
+D=M          // D = R1
+@R3
+M=D          // R3 = R1
+
+// 標記迴圈的起點
+(LOOP)
+    // 檢查 R3 是否為 0
+    @R3
+    D=M      // D = R3
+    @END     // 若 R3 == 0 則跳轉到 END
+    D;JEQ
+
+    // 將 R0 加到 R2 (累積加法實現乘法)
+    @R0
+    D=M      // D = R0
+    @R2
+    M=D+M    // R2 = R2 + R0
+
+    // 將 R3 減 1
+    @R3
+    M=M-1    // R3 = R3 - 1
+
+    // 跳回 LOOP 繼續檢查 R3
+    @LOOP
+    0;JMP
+
+// 當乘法完成後，進入無限循環
+(END)
+    @END
+    0;JMP

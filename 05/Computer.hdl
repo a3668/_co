@@ -14,10 +14,26 @@
  * with the computer via the keyboard.
  */
 
+
 CHIP Computer {
 
     IN reset;
 
     PARTS:
-    // Put your code here:
+    // ROM32K: Instruction memory (stores program instructions)
+    ROM32K(address=pc, out=instruction);
+
+    // Memory: Data memory (RAM and memory-mapped I/O for Screen and Keyboard)
+    Memory(in=outM, load=writeM, address=addressM, out=memoryOut);
+
+    // CPU: Executes instructions and controls the computer's behavior
+    CPU(
+        inM=memoryOut,          // Input from Memory
+        instruction=instruction, // Current instruction from ROM
+        reset=reset,             // Reset signal
+        outM=outM,              // Output to Memory
+        writeM=writeM,          // Write enable for Memory
+        addressM=addressM,      // Address for Memory
+        pc=pc                   // Program counter for ROM
+    );
 }
