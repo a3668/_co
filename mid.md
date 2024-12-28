@@ -136,7 +136,7 @@
 
 [Bit代碼](./03/a/Bit.hdl)
 
-![Bit](./pic/Bit.png)
+![Bit](./pic/bit.png)
 
 
 ----
