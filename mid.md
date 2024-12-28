@@ -42,6 +42,20 @@
 
 [Not16代碼](./01/Not16.hdl)
 
-![Not](./pic/not.png)
+![Not16](./pic/Not16.png)
+
+----
+
+
+[And16代碼](./01/And16.hdl)
+
+![And16](./pic/AND16.png)
+
+----
+
+
+[Or16代碼](./01/Or.hdl)
+
+![Or16](./pic/Or16.png)
 
 
