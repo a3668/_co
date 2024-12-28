@@ -12,9 +12,9 @@
  */
 
 CHIP FullAdder {
-    IN a, b, c;  // 1-bit inputs
-    OUT sum,     // Right bit of a + b + c
-        carry;   // Left bit of a + b + c
+    IN a, b, c; 
+    OUT sum,     
+        carry;   
 
     PARTS:
     // Sum = a XOR b XOR c
