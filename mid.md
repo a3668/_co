@@ -131,6 +131,91 @@
 ### [ALU.md](./02/ALU.md)
 [ALU代碼](./02/ALU.hdl)
 
+## 第五週習題 -- 第三章前半部
+### 不會的部分參考維基百科和老師給的教材和數位邏輯設計書本,還有參考老師網站的圖,測試太多次還是不行就詢問chatgpt,問gpt我的錯誤在哪請他教我改進,代碼測試完成後在平板上的筆記軟體畫出電路圖
+
+[Bit代碼](./03/a/Bit.hdl)
+
+![Bit](./pic/Bit.png)
+
+
+----
+
+[Register代碼](./03/a/Register.hdl)
+
+![Register](./pic/Register.png)
+
+----
+
+[RAM8代碼](./03/a/RAM8.hdl)
+
+![RAM8](./pic/RAM8.png)
+
+----
+
+[RAM64代碼](./03/a/RAM64.hdl)
+
+![RAM64](./pic/RAM64.png)
+
+----
+
+## 第六週習題 -- 第三章後半部
+### 參考老師簡報
+[RAM512代碼](./03/b/RAM512.hdl)
+[RAM4K代碼](./03/b/RAM4K.hdl)
+[RAM16K代碼](./03/b/RAM16K.hdl)
+全按照此圖推導下去
+![](./pic/RAM.png)
+
+----
+
+## 第七週習題 -- 第四章 第一題
+### 聽完老師講解後看老師提供教材和gpt協助完成
+[mult.asm](./04/fill/Fill.asm)
+[代碼解釋](./04/README.md)
+[位置](./pic/screen.png)
+
+----
+
+## 第八週習題 -- 第四章 第二題
+### 聽完老師講解後看老師提供教材和gpt協助完成
+[mult.asm](./04/mult/mult.asm)
+[代碼解釋](./04/README.md)
+
+----
+
+## 第九週習題 -- 第五章 CPU
+### 看作者教材和gpt協助完成
+[CPU](./05/CPU.hdl)
+
+----
+
+## 第十週習題 -- 第五章 後半部
+### 聽完老師講解後看老師提供教材和gpt裡的老師協助完成
+[Ｍemory](./05/Ｍemory.hdl)
+[Computer](./05/Computer.hdl)
+
+----
+
+## 期末作業
+[final](./final/assembler.cpp)
+[講解](./final/README.md)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
